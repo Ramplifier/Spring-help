@@ -26,8 +26,10 @@ dus de no-args constructor annotatie maakt de een constructor voor je aan als je
 public class Gebruiker {
 
 
+    //Id geeft aan dat het de id is van deze regel in de database. Id's moeten uniek en aanwezig zijn.
     @Id
-    @GeneratedValue
+    //Generated value zorgt ervoor dat deze waarde automatisch gevuld wordt en uniek is bij het opslaan in de database
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -40,8 +42,11 @@ public class Gebruiker {
     @Email
     private String emailadres;
 
-
+    //Meerdere gebruikers kunnen meerdere rollen hebben en deze kunnen ook hetzelfde zijn.
     @ManyToMany(fetch = FetchType.LAZY)
+    //Om te zorgen dat je niet handmatig zelf hoeft te zegggen welke users welke rollen hebben kun je deze annotatie gebruiken.
+    //Deze maakt een nieuwe tabel in je database waar gebruikers in staan met hun rollen op basis van de id van de gebruiker en de id van de rol.
+    //(check de tabel GEBRUIKER_ROLES na het aanmaken van een account te zien hoe het er uit ziet)
     @JoinTable(name = "gebruiker_roles",
             joinColumns = @JoinColumn(name = "gebruiker_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
